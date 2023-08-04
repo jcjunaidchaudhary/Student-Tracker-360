@@ -26,7 +26,6 @@ class SignUpView(Resource):
         if existing_email:
             raise FPAPIException({"email": "Email is already in use."})
 
-        print("hello................................",data)
         user = User(**data)
 
         try:

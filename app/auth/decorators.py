@@ -5,9 +5,9 @@ from app import app
 import jwt
 
 
-def require_login(f):
+def require_login(func):
 
-    @wraps(f)
+    @wraps(func)
     def decorated(*args, **kwargs):
         token = None
         token=request.cookies.get('currentUser')
@@ -17,11 +17,11 @@ def require_login(f):
             return jsonify({'message' : 'Token is missing!'})
         try: 
             data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=["HS256"],options=None)
-            current_user = User.query.filter_by(id=data['user_id']).first()
+            current_user = User.query.filter_by(id=data["user"]["id"]).first()
             if current_user.id != session["user_id"]:
                 return jsonify({'message' : 'Token is invalid!'})
         except:
             return jsonify({'message' : 'Token is invalid!'})
 
-        return f(current_user)
+        return func(*args, **kwargs)
     return decorated
