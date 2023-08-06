@@ -21,4 +21,11 @@ def create_app():
         url_prefix=f'/api/{auth_blueprint.url_prefix}',
     )
 
+    from app.md.controllers import md_blueprint
+    
+    app.register_blueprint(
+        md_blueprint,
+        url_prefix=f'/api/{md_blueprint.url_prefix}',
+    )
+
     return app
